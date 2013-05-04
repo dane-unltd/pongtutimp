@@ -212,10 +212,6 @@ func serializeVecSlice(buf io.Writer, serAll bool, sl, slOld []Vec) {
 }
 
 func serialize(buf io.Writer, serAll bool) {
-	serializeVecSlice(buf, serAll, state.pos, stateOld.pos)
-	serializeVecSlice(buf, serAll, state.vel, stateOld.vel)
-	serializeVecSlice(buf, serAll, state.size, stateOld.size)
-
 	bitMask := make([]byte, 1)
 	bufTemp := &bytes.Buffer{}
 	for i := range state.model {
@@ -227,6 +223,10 @@ func serialize(buf io.Writer, serAll bool) {
 	}
 	buf.Write(bitMask)
 	buf.Write(bufTemp.Bytes())
+
+	serializeVecSlice(buf, serAll, state.pos, stateOld.pos)
+	serializeVecSlice(buf, serAll, state.vel, stateOld.vel)
+	serializeVecSlice(buf, serAll, state.size, stateOld.size)
 
 	bitMask[0] = 0
 	bufTemp.Reset()
